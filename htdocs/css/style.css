@@ -152,7 +152,7 @@ body {
 
 .logo-wrapper {
     position: relative;
-    cursor: pointer;
+    /* cursor: pointer; */
     margin-bottom: 2rem;
     transition: transform 0.5s ease-out;
 }
