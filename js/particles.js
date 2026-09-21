@@ -75,6 +75,18 @@ class Particle {
         ctx.fill();
         ctx.shadowBlur = 0; // Reset blur for performance
     }
+
+    // Re-tint particle colors when the theme changes
+    applyTheme() {
+        const light = document.documentElement.classList.contains('light-theme');
+        this.color = light
+            ? (Math.random() > 0.35
+                ? `rgba(230, 28, 36, ${this.maxAlpha})`
+                : `rgba(60, 60, 70, ${this.maxAlpha * 0.5})`)
+            : (Math.random() > 0.35
+                ? `rgba(230, 28, 36, ${this.maxAlpha})`
+                : `rgba(255, 255, 255, ${this.maxAlpha * 0.5})`);
+    }
 }
 
 // Initialize Particles — denser, capped higher so big screens stay atmospheric
@@ -94,6 +106,12 @@ function animate() {
 
     requestAnimationFrame(animate);
 }
+
+// Re-tint existing particles when the theme toggle is clicked
+document.getElementById('themeToggle')?.addEventListener('click', () => {
+    // Delay slightly so the class toggle in theme.js applies first
+    setTimeout(() => particles.forEach(p => p.applyTheme()), 0);
+});
 
 // Start particle loop when ready
 window.onload = function() {

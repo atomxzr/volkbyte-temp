@@ -1,6 +1,31 @@
 :root {
     --bg-color: #0a0a0c;
     --accent-red: #e61c24;
+
+    /* Theme-aware colors (dark by default) */
+    --text-color: #ffffff;
+    --text-soft: #e2e8f0;
+    --grid-line: rgba(255, 255, 255, 0.03);
+    --headline-glow: rgba(255, 255, 255, 0.45);
+    --headline-glow-soft: rgba(255, 255, 255, 0.2);
+    --selection-text: #ffffff;
+    --toggle-bg: rgba(255, 255, 255, 0.06);
+    --toggle-fg: #ffffff;
+    --toggle-border: rgba(255, 255, 255, 0.15);
+}
+
+/* Light Theme */
+:root.light-theme {
+    --bg-color: #f4f2f0;
+    --text-color: #1a1a1e;
+    --text-soft: #3d3d45;
+    --grid-line: rgba(0, 0, 0, 0.05);
+    --headline-glow: rgba(30, 30, 35, 0.18);
+    --headline-glow-soft: rgba(30, 30, 35, 0.08);
+    --selection-text: #ffffff;
+    --toggle-bg: rgba(0, 0, 0, 0.05);
+    --toggle-fg: #1a1a1e;
+    --toggle-border: rgba(0, 0, 0, 0.15);
 }
 
 /* Icon path used by every glow layer. Change the icon and every glow updates,
@@ -23,11 +48,12 @@ body {
 }
 
 body {
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Red Hat Mono', monospace;
     background-color: var(--bg-color);
-    color: #ffffff;
+    color: var(--text-color);
     overflow: hidden;
     user-select: none;
+    transition: background-color 0.4s ease, color 0.4s ease;
 
     display: flex;
     align-items: center;
@@ -38,7 +64,7 @@ body {
 /* Selection colors */
 ::selection {
     background-color: var(--accent-red);
-    color: #ffffff;
+    color: var(--selection-text);
 }
 
 .full-size {
@@ -61,8 +87,8 @@ body {
     opacity: 0.6;
     background-size: 50px 50px;
     background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
     mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 80%);
     -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 80%);
 }
@@ -217,8 +243,8 @@ body {
 /* ---------------------------------- */
 
 .headline {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 800;
+    font-family: 'Red Hat Mono', monospace;
+    font-weight: 700;
     letter-spacing: -0.025em;
     line-height: 1;
     font-size: 2.25rem;
@@ -237,9 +263,9 @@ body {
     }
 }
 
-/* Gradient Text Animation — white shimmer for readability */
+/* Gradient Text Animation — shimmer for readability */
 .headline {
-    background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 45%, #f8fafc 70%, #ffffff 100%);
+    background: linear-gradient(135deg, var(--text-color) 0%, var(--text-soft) 45%, var(--text-color) 70%, var(--text-color) 100%);
     background-size: 200% auto;
     color: transparent;
     -webkit-background-clip: text;
@@ -257,7 +283,7 @@ body {
    Uses drop-shadow instead of text-shadow because text-shadow
    bleeds through background-clip:text, making glyphs look hazy. */
 .headline {
-    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.45)) drop-shadow(0 0 28px rgba(255, 255, 255, 0.2));
+    filter: drop-shadow(0 0 12px var(--headline-glow)) drop-shadow(0 0 28px var(--headline-glow-soft));
 }
 
 /* ---------------------------------- */
@@ -272,4 +298,59 @@ body {
     height: 100%;
     pointer-events: none;
     z-index: 10;
+}
+
+/* ---------------------------------- */
+/* Theme Toggle Button (top right)    */
+/* ---------------------------------- */
+
+.theme-toggle {
+    position: fixed;
+    top: 1.25rem;
+    right: 1.25rem;
+    z-index: 100;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid var(--toggle-border);
+    background-color: var(--toggle-bg);
+    color: var(--toggle-fg);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    border-color: var(--accent-red);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+/* Show sun icon in dark mode (click = go light), moon in light mode (click = go dark) */
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+    position: absolute;
+    transition: opacity 0.3s ease, transform 0.4s ease;
+}
+
+.theme-toggle .icon-moon {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+}
+
+.light-theme .theme-toggle .icon-moon {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+}
+
+.light-theme .theme-toggle .icon-sun {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
 }
