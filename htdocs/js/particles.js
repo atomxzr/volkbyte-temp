@@ -69,7 +69,9 @@ class Particle {
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
         ctx.shadowBlur = this.size * 4;
-        ctx.shadowColor = '#e61c24';
+        ctx.shadowColor = window.getIconGlowColor
+            ? window.getIconGlowColor()
+            : '#e61c24';
         ctx.fill();
         ctx.shadowBlur = 0; // Reset blur for performance
     }
