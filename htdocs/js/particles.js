@@ -77,8 +77,8 @@ class Particle {
     }
 }
 
-// Initialize Particles
-const particleCount = Math.min(Math.floor(window.innerWidth / 15), 80);
+// Initialize Particles — denser, capped higher so big screens stay atmospheric
+const particleCount = Math.min(Math.floor(window.innerWidth / 7), 160);
 for (let i = 0; i < particleCount; i++) {
     particles.push(new Particle());
 }
