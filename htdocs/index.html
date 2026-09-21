@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volkbyte</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="icons/favicon.png">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Background Canvas for Particles -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Background Grid Lines -->
+    <div class="bg-layer bg-grid"></div>
+
+    <!-- Background Crimson Radial Glow -->
+    <div class="bg-layer glow-vignette"></div>
+
+    <!-- Central Glowing Core Backlight -->
+    <div class="bg-layer core-backlight"></div>
+
+    <!-- Main Interactive Container -->
+    <main class="content">
+
+        <!-- Logo Wrapper with Interactive Hover Effects -->
+        <div class="logo-wrapper">
+            <!-- Secondary Ambient Glow behind SVG -->
+            <div class="logo-ambient-glow"></div>
+
+            <!-- Main Volkbyte Wolf SVG Icon -->
+            <div class="logo-icon logo-shadow">
+                <img src="icons/icon.svg" alt="Volkbyte Logo" class="full-size">
+            </div>
+        </div>
+
+        <!-- Only Requested Text: "Hallo :3c" -->
+        <h1 class="headline">
+            Hallo :3c
+        </h1>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/particles.js"></script>
+</body>
+</html>

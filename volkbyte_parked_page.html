@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volkbyte</title>
+    <!-- Favicon using SVG matching logo style -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path fill='%23121318' d='M0 0h100v100H0z'/><path fill='%23e61c24' d='M40 10 L52 32 L35 30 Z M80 47 L88 53 L78 61 Z'/><path fill='%23121318' stroke='%23e61c24' stroke-width='2' d='M20 55 L45 10 L55 28 L50 28 L70 32 L88 47 L75 61 L60 56 L64 65 L77 62 L74 68 L60 65 L50 88 L42 85 L20 55 Z'/></svg>">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0a0a0c;
+            --accent-red: #e61c24;
+            --accent-dark-red: #990f14;
+            --glow-color: rgba(230, 28, 36, 0.4);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: #ffffff;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .font-tech {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Ambient Glowing Background Grid */
+        .bg-grid {
+            background-size: 50px 50px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%);
+            -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%);
+        }
+
+        /* Radial Crimson Vignette Glow */
+        .glow-vignette {
+            background: radial-gradient(circle at 50% 50%, rgba(230, 28, 36, 0.12) 0%, rgba(10, 10, 12, 0.95) 70%, #0a0a0c 100%);
+        }
+
+        /* Floating Logo & Content Animation */
+        @keyframes subtleFloat {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-12px) rotate(0.5deg);
+            }
+        }
+
+        .animate-float {
+            animation: subtleFloat 6s ease-in-out infinite;
+        }
+
+        /* Pulsing Radial Glow Behind Logo */
+        @keyframes pulseGlow {
+            0%, 100% {
+                opacity: 0.4;
+                transform: scale(0.95);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        }
+
+        .animate-pulse-glow {
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        /* Glowing Text Effect */
+        .glow-text {
+            text-shadow: 0 0 20px rgba(230, 28, 36, 0.6), 0 0 40px rgba(230, 28, 36, 0.2);
+        }
+
+        /* Gradient Text Animation */
+        .animated-gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 40%, #e61c24 80%, #ff4d54 100%);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: textShimmer 5s ease infinite;
+        }
+
+        @keyframes textShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Hover Drop Shadow on SVG */
+        .logo-shadow {
+            filter: drop-shadow(0 15px 25px rgba(230, 28, 36, 0.35));
+            transition: filter 0.4s ease, transform 0.4s ease;
+        }
+
+        .logo-shadow:hover {
+            filter: drop-shadow(0 20px 35px rgba(230, 28, 36, 0.65));
+        }
+
+        /* Canvas Overlay for Dynamic Particles */
+        #particleCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="h-full flex items-center justify-center relative bg-[#0a0a0c] selection:bg-[#e61c24] selection:text-white">
+
+    <!-- Background Canvas for Particles -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Background Grid Lines -->
+    <div class="absolute inset-0 bg-grid z-0 opacity-60"></div>
+
+    <!-- Background Crimson Radial Glow -->
+    <div class="absolute inset-0 glow-vignette z-0 pointer-events-none"></div>
+
+    <!-- Central Glowing Core Backlight -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 sm:w-96 sm:h-96 bg-[#e61c24] rounded-full blur-[120px] pointer-events-none animate-pulse-glow opacity-30 z-0"></div>
+
+    <!-- Main Interactive Container -->
+    <main class="relative z-20 flex flex-col items-center justify-center px-6 text-center animate-float">
+        
+        <!-- Logo Wrapper with Interactive Hover Effects -->
+        <div class="relative group cursor-pointer mb-8 sm:mb-10 transition-transform duration-500 ease-out hover:scale-105">
+            <!-- Secondary Ambient Glow behind SVG -->
+            <div class="absolute -inset-4 bg-gradient-to-r from-[#e61c24] to-[#990f14] rounded-full opacity-20 blur-xl group-hover:opacity-50 transition duration-500"></div>
+
+            <!-- Main Volkbyte Wolf SVG Icon -->
+            <div class="relative z-10 w-44 h-44 sm:w-56 sm:h-56 md:w-64 md:h-64 flex items-center justify-center logo-shadow">
+                <svg viewBox="0 0 500 500" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" aria-label="Volkbyte Logo">
+                    <!-- Red Inner Ear / Accent Base Layer -->
+                    <path fill="#e61c24" d="M 230,110 L 252,202 L 180,150 Z" />
+                    
+                    <!-- Main Dark Head Silhouette -->
+                    <path fill="#121318" d="M 230,110 
+                             L 272,130 
+                             L 242,185 
+                             L 290,205 
+                             L 340,260 
+                             L 442,235 
+                             L 395,310 
+                             L 305,282 
+                             L 325,340 
+                             L 272,305 
+                             L 252,380 
+                             L 130,355 
+                             L 128,280 
+                             L 78,280 
+                             L 165,200 
+                             L 230,110 Z" />
+                             
+                    <!-- Red Jaw / Snout Tip -->
+                    <path fill="#e61c24" d="M 400,235 L 442,235 L 395,310 Z" />
+
+                    <!-- Red Chest / Neck Fur Accents -->
+                    <path fill="#e61c24" d="M 128,280 L 212,260 L 160,380 L 128,355 Z" />
+                    <path fill="#e61c24" d="M 160,380 L 252,380 L 215,440 L 175,410 Z" />
+                    <path fill="#e61c24" d="M 100,360 L 118,360 L 118,378 L 100,378 Z" />
+
+                    <!-- White Sharp Eye -->
+                    <polygon fill="#ffffff" points="265,205 310,230 268,232" />
+
+                    <!-- White Sharp Fang -->
+                    <polygon fill="#ffffff" points="300,283 322,325 336,294" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Only Requested Text: "Hallo :3c" -->
+        <h1 class="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight font-tech animated-gradient-text glow-text leading-none select-none">
+            Hallo :3c
+        </h1>
+
+    </main>
+
+    <script>
+        // Interactive Canvas Particle Effect
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resize);
+        resize();
+
+        // Mouse tracking for subtle interactive float response
+        let mouse = { x: width / 2, y: height / 2, radius: 150 };
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        });
+
+        // Particle Class
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.4;
+                this.speedY = -Math.random() * 0.6 - 0.2; // Slow floating upwards
+                this.alpha = Math.random() * 0.6 + 0.1;
+                this.maxAlpha = this.alpha;
+                
+                // Color variation: Crimson Red or Off-White
+                this.color = Math.random() > 0.35 
+                    ? `rgba(230, 28, 36, ${this.alpha})` 
+                    : `rgba(255, 255, 255, ${this.alpha * 0.5})`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Repulsion near mouse
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < mouse.radius) {
+                    let force = (mouse.radius - distance) / mouse.radius;
+                    this.x -= (dx / distance) * force * 2;
+                    this.y -= (dy / distance) * force * 2;
+                }
+
+                // Wrap around screens
+                if (this.y < -10 || this.x < -10 || this.x > width + 10) {
+                    this.reset();
+                    this.y = height + 10;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = this.size * 4;
+                ctx.shadowColor = '#e61c24';
+                ctx.fill();
+                ctx.shadowBlur = 0; // Reset blur for performance
+            }
+        }
+
+        // Initialize Particles
+        const particleCount = Math.min(Math.floor(window.innerWidth / 15), 80);
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+
+        // Animation Loop
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // Start particle loop when ready
+        window.onload = function() {
+            animate();
+        };
+    </script>
+</body>
+</html>

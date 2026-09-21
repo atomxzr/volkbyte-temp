@@ -1,0 +1,274 @@
+:root {
+    --bg-color: #0a0a0c;
+    --accent-red: #e61c24;
+    --accent-dark-red: #990f14;
+    --glow-color: rgba(230, 28, 36, 0.4);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-color);
+    color: #ffffff;
+    overflow: hidden;
+    user-select: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Selection colors (was bg-[#e61c24] / text-white) */
+::selection {
+    background-color: var(--accent-red);
+    color: #ffffff;
+}
+
+.font-tech {
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.full-size {
+    width: 100%;
+    height: 100%;
+}
+
+/* ---------------------------------- */
+/* Background layers                  */
+/* ---------------------------------- */
+
+.bg-layer {
+    position: absolute;
+    inset: 0;
+}
+
+/* Ambient Glowing Background Grid */
+.bg-grid {
+    z-index: 0;
+    opacity: 0.6;
+    background-size: 50px 50px;
+    background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 80%);
+    -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 1) 30%, rgba(0, 0, 0, 0) 80%);
+}
+
+/* Radial Crimson Vignette Glow */
+.glow-vignette {
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, rgba(230, 28, 36, 0.12) 0%, rgba(10, 10, 12, 0.95) 70%, #0a0a0c 100%);
+}
+
+/* Central Glowing Core Backlight */
+.core-backlight {
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    inset: auto;
+    width: 18rem;
+    height: 18rem;
+    transform: translate(-50%, -50%);
+    background-color: var(--accent-red);
+    border-radius: 9999px;
+    filter: blur(120px);
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+@media (min-width: 640px) {
+    .core-backlight {
+        width: 24rem;
+        height: 24rem;
+    }
+}
+
+/* Pulse animation for core backlight */
+@keyframes pulseGlow {
+    0%, 100% {
+        opacity: 0.4;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+.core-backlight {
+    animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* ---------------------------------- */
+/* Main content                       */
+/* ---------------------------------- */
+
+.content {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1.5rem;
+    text-align: center;
+
+    /* Floating Logo & Content Animation */
+    animation: subtleFloat 6s ease-in-out infinite;
+}
+
+@keyframes subtleFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-12px) rotate(0.5deg);
+    }
+}
+
+/* ---------------------------------- */
+/* Logo                               */
+/* ---------------------------------- */
+
+.logo-wrapper {
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    transition: transform 0.5s ease-out;
+}
+
+@media (min-width: 640px) {
+    .logo-wrapper {
+        margin-bottom: 2.5rem;
+    }
+}
+
+.logo-wrapper:hover {
+    transform: scale(1.05);
+}
+
+/* Secondary Ambient Glow behind SVG */
+.logo-ambient-glow {
+    position: absolute;
+    inset: -1rem;
+    background: linear-gradient(to right, var(--accent-red), var(--accent-dark-red));
+    border-radius: 9999px;
+    opacity: 0.2;
+    filter: blur(24px);
+    transition: opacity 0.5s ease;
+}
+
+.logo-wrapper:hover .logo-ambient-glow {
+    opacity: 0.5;
+}
+
+/* Main Volkbyte Wolf SVG Icon */
+.logo-icon {
+    position: relative;
+    z-index: 10;
+    width: 11rem;
+    height: 11rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 640px) {
+    .logo-icon {
+        width: 14rem;
+        height: 14rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .logo-icon {
+        width: 16rem;
+        height: 16rem;
+    }
+}
+
+/* Hover Drop Shadow on SVG */
+.logo-shadow {
+    filter: drop-shadow(0 15px 25px rgba(230, 28, 36, 0.35));
+    transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.logo-shadow:hover {
+    filter: drop-shadow(0 20px 35px rgba(230, 28, 36, 0.65));
+}
+
+/* ---------------------------------- */
+/* Headline                           */
+/* ---------------------------------- */
+
+.headline {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1;
+    font-size: 2.25rem;
+    user-select: none;
+}
+
+@media (min-width: 640px) {
+    .headline {
+        font-size: 3.75rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .headline {
+        font-size: 4.5rem;
+    }
+}
+
+/* Gradient Text Animation — white shimmer for readability */
+.headline {
+    background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 45%, #f8fafc 70%, #ffffff 100%);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: textShimmer 5s ease infinite;
+}
+
+@keyframes textShimmer {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Glowing Text Effect — soft white for readability.
+   Uses drop-shadow instead of text-shadow because text-shadow
+   bleeds through background-clip:text, making glyphs look hazy. */
+.headline {
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.45)) drop-shadow(0 0 28px rgba(255, 255, 255, 0.2));
+}
+
+/* ---------------------------------- */
+/* Canvas Overlay for Dynamic Particles */
+/* ---------------------------------- */
+
+#particleCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
